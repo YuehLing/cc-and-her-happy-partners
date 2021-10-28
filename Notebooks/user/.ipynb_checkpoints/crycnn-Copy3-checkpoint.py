@@ -35,7 +35,7 @@ def read_cam(video_capture):
     if video_capture.isOpened():
         while True:
             ret_val, frame = video_capture.read();
-            
+            frame=cv2.resize(frame,(1280,720))
             
             blurred = cv2.GaussianBlur(frame, (11, 11), 0)
             hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -44,7 +44,7 @@ def read_cam(video_capture):
 	# a series of dilations and erosions to remove any small
 	# blobs left in the mask
     
-            mask = cv2.inRange(frame, (0,0,100),(80,80,230))
+            mask = cv2.inRange(frame, (0,80,80),(40,255,255))
             mask = cv2.erode(mask, None, iterations=2)
             mask = cv2.dilate(mask, None, iterations=2)
     
@@ -67,17 +67,23 @@ def read_cam(video_capture):
                 if radius > 10:
 			# draw the circle and centroid on the frame,
 			# then update the list of tracked points
-                    #cv2.circle(frame, (int(x), int(y)), int(radius),(0, 255, 255), 2)
+                    cv2.circle(frame, (int(x), int(y)), int(radius),(0, 255, 255), 2)
                     cv2.circle(frame, center, 5, (0, 0, 255), -1)
 	# update the points queue
             pts.appendleft(center)
+            print(center)
 
 	# loop over the set of tracked points
-            for i in range(1, len(pts)):
-                if pts[i - 1] is None or pts[i] is None:
-                    continue
-                thickness = int(np.sqrt(MAXLEN / float(i + 1)) * 2.5)
-                cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+#            for i in range(1, len(pts)):
+#                if pts[i - 1] is None or pts[i] is None:
+ #                   continue
+  #              thickness = int(np.sqrt(MAXLEN / float(i + 1)) * 2.5)
+   #             cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+                
+            cv2.line(frame, (640,0), (640,720), (100, 0, 100), 5)
+            if isinstance(center,tuple) :
+                cv2.line(frame, (640,center[1]), center, (0, 255, 0), 5)
+            #print(type(center))
 	# show the frame to our screen
             cv2.imshow("Frame", frame)
             key=cv2.waitKey(10)

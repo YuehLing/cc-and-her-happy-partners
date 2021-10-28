@@ -61,7 +61,7 @@ def read_cam(video_capture):
                 break;
             ret_val, frame = video_capture.read();
             bur=cv2.GaussianBlur(frame, (11, 11), 0)
-            img_red = cv2.inRange(frame,(0,0,100),(80,80,230))
+            img_red = cv2.inRange(frame,(0,80,80),(30,255,255))
             image = cv2.bitwise_and(frame,frame,mask = img_red)
             
 
