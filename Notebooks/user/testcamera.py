@@ -60,7 +60,7 @@ def read_cam(video_capture):
                 # This will fail if the user closed the window; Nasties get printed to the console
                 break;
             ret_val, frame = video_capture.read();
-            
+            bur=cv2.GaussianBlur(frame, (11, 11), 0)
             img_red = cv2.inRange(frame,(0,0,100),(80,80,230))
             image = cv2.bitwise_and(frame,frame,mask = img_red)
             
